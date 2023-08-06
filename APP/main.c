@@ -11,13 +11,30 @@
 //#include <math.h>
 
 #include "DIO_int.h"
+//#include "DIO_reg.h"
 //#include "7SEG_int.h"
 //#include "SEG_KIT_int.h"
 #include "LCD_KIT_int.h"
-//#include "KEYBAD_int.h"
-//#include "KEYPAD_priv.h"
+#include "KEYBAD_int.h"
+#include "KEYPAD_priv.h"
+#include "GIE_int.h"
+//#include "EXT_INT_int.h"
+//#include "EXT_INT_priv.h"
+//#include "ADC_int.h"
+//#include "ADC_priv.h"
+//#include "USART_int.h"
+//#include "USART_priv.h"
+#include "Timer0_int.h"
+#include "Timer0_priv.h"
+#include "Timer0_confg.h"
+#include "Timer1_int.h"
+#include "Timer1_priv.h"
+#include "Timer1_confg.h"
 
 #include <util/delay.h>
+
+#include "../MCAL/Timer0/Timer0_int.h"
+#include "../MCAL/Timer0/Timer0_priv.h"
 
 /****************************7SEG Application**********************************/
 /*
@@ -105,505 +122,506 @@ int main(void)
 
 /****************************LCD Application***********************************/
 
-int main(void)
-{
-	LCD_KIT_voidInitialization();
-
-/***** Story of Bary *****/
 //
-//	u8 Delay_Counter=0;
+//int main(void)
+//{
+//	LCD_KIT_voidInitialization();
 //
-//	u8 Leg_10=1,Leg_9=1,Leg_8=1;
+///***** Story of Bary *****/
+////
+////	u8 Delay_Counter=0;
+////
+////	u8 Leg_10=1,Leg_9=1,Leg_8=1;
+////
+//////setting custom character array
+////	u8 Person_State[6][8]=
+////	{
+////		{0x04,0x0A,0x04,0x1F,0x04,0x04,0x0A,0x0A},
+////		{0x04,0x0A,0x05,0x0E,0x14,0x04,0x0A,0x11},
+////		{0x04,0x0A,0x14,0x0E,0x05,0x04,0x0A,0x11},
+////		{0x08,0x14,0x09,0x0A,0x04,0x0B,0x12,0x00},
+////		{0x02,0x05,0x12,0x0A,0x04,0x1A,0x09,0x00},
+////		{0x02,0x02,0x02,0x02,0x02,0x02,0x02,0x02}
+////	};
+////
+////// Store characters
+////	LCD_KIT_voidStoreCustomCharacter(Person_State[0],0x40);
+////	LCD_KIT_voidStoreCustomCharacter(Person_State[1],0x48);
+////	LCD_KIT_voidStoreCustomCharacter(Person_State[2],0x50);
+////	LCD_KIT_voidStoreCustomCharacter(Person_State[3],0x58);
+////	LCD_KIT_voidStoreCustomCharacter(Person_State[4],0x60);
+////	LCD_KIT_voidStoreCustomCharacter(Person_State[5],0x68);
+////
+////// Ready-Steady-Go stage
+////	LCD_KIT_voidSetCurser(Line1,Col7);
+////	LCD_KIT_voidDisplayString("Ready");
+////	_delay_ms(500);
+////	LCD_KIT_voidRunCommand(Clear_LCD);
+////
+////	LCD_KIT_voidSetCurser(Line1,Col7);
+////	LCD_KIT_voidDisplayString("Steady");
+////	_delay_ms(500);
+////	LCD_KIT_voidRunCommand(Clear_LCD);
+////
+////	LCD_KIT_voidSetCurser(Line1,Col9);
+////	LCD_KIT_voidDisplayString("GO");
+////	_delay_ms(500);
+////	LCD_KIT_voidRunCommand(Clear_LCD);
+////
+////// Setting players positions
+////	LCD_KIT_voidSetCurser(Line3,Col0);
+////	LCD_KIT_voidDisplayCharacter(0x00);
+////
+////	LCD_KIT_voidSetCurser(Line2,Col0);
+////	LCD_KIT_voidDisplayCharacter(0x00);
+////
+////	LCD_KIT_voidSetCurser(Line4,Col0);
+////	LCD_KIT_voidDisplayCharacter(0x00);
+////
+////// Setting Barriers Positions
+////	LCD_KIT_voidSetCurser(Line2,Col2);
+////	LCD_KIT_voidDisplayCharacter(0xFF);
+////	LCD_KIT_voidSetCurser(Line2,Col18);
+////	LCD_KIT_voidDisplayCharacter(0xFF);
+////
+////	LCD_KIT_voidSetCurser(Line3,Col10);
+////	LCD_KIT_voidDisplayCharacter(0xFF);
+////	LCD_KIT_voidSetCurser(Line3,Col16);
+////	LCD_KIT_voidDisplayCharacter(0xFF);
+////
+////	LCD_KIT_voidSetCurser(Line4,Col13);
+////	LCD_KIT_voidDisplayCharacter(0xFF);
+////	LCD_KIT_voidSetCurser(Line4,Col17);
+////	LCD_KIT_voidDisplayCharacter(0xFF);
+////
+////// Setting End line Positions
+////	LCD_KIT_voidSetCurser(Line2,Col19);
+////	LCD_KIT_voidDisplayCharacter(0x05);
+////	LCD_KIT_voidSetCurser(Line3,Col19);
+////	LCD_KIT_voidDisplayCharacter(0x05);
+////	LCD_KIT_voidSetCurser(Line4,Col19);
+////	LCD_KIT_voidDisplayCharacter(0x05);
+////
+////// Start Game
+////	LCD_KIT_voidSetCurser(Line1,Col4);
+////	LCD_KIT_voidDisplayString("Run Bary Run");
+////
+////	while(1)
+////	{
+////		if(Delay_Counter<153)
+////		{
+////			_delay_ms(10);
+////			Delay_Counter++;
+////
+////			if(Delay_Counter%10==0)
+////			{
+////				if((Delay_Counter/10==2)||(Delay_Counter/10==3)||(Delay_Counter/10==18)||(Delay_Counter/10==19))
+////				{
+////					if(Leg_10==1)
+////					{
+////						LCD_KIT_voidSetCurser(Line1,Delay_Counter/10);
+////						LCD_KIT_voidRunCommand(0x10);
+////						LCD_KIT_voidDisplayCharacter(' ');
+////						LCD_KIT_voidSetCurser(Line2,Delay_Counter/10);
+////						LCD_KIT_voidDisplayCharacter(0x03);
+////						Leg_10=2;
+////					}
+////					else if(Leg_10==2)
+////					{
+////						LCD_KIT_voidSetCurser(Line2,Delay_Counter/10);
+////						LCD_KIT_voidRunCommand(0x10);
+////						LCD_KIT_voidDisplayCharacter(' ');
+////						LCD_KIT_voidSetCurser(Line1,Delay_Counter/10);
+////						LCD_KIT_voidDisplayCharacter(0x04);
+////						Leg_10=1;
+////					}
+////				}
+////				else
+////				{
+////					LCD_KIT_voidSetCurser(Line2,Delay_Counter/10);
+////					LCD_KIT_voidRunCommand(0x10);
+////					LCD_KIT_voidDisplayCharacter(' ');
+////					LCD_KIT_voidSetCurser(Line2,Delay_Counter/10);
+////
+////					if(Leg_10==1)
+////					{
+////						LCD_KIT_voidDisplayCharacter(0x01);
+////						Leg_10=2;
+////					}
+////					else if(Leg_10==2)
+////					{
+////						LCD_KIT_voidDisplayCharacter(0x02);
+////						Leg_10=1;
+////					}
+////				}
+////			}
+////
+////			if(Delay_Counter%9==0)
+////			{
+////				if((Delay_Counter/9==13)||(Delay_Counter/9==14)||(Delay_Counter/9==17)||(Delay_Counter/9==18))
+////				{
+////					if(Leg_9==1)
+////					{
+////						LCD_KIT_voidSetCurser(Line4,Delay_Counter/9);
+////						LCD_KIT_voidRunCommand(0x10);
+////						LCD_KIT_voidDisplayCharacter(' ');
+////						LCD_KIT_voidSetCurser(Line3,Delay_Counter/9);
+////						LCD_KIT_voidDisplayCharacter(0x01);
+////						Leg_9=2;
+////					}
+////					else if(Leg_9==2)
+////					{
+////						LCD_KIT_voidSetCurser(Line3,Delay_Counter/9);
+////						LCD_KIT_voidRunCommand(0x10);
+////						LCD_KIT_voidDisplayCharacter(' ');
+////						LCD_KIT_voidSetCurser(Line4,Delay_Counter/9);
+////						LCD_KIT_voidDisplayCharacter(0x02);
+////						Leg_9=1;
+////					}
+////				}
+////				else
+////				{
+////					LCD_KIT_voidSetCurser(Line4,Delay_Counter/9);
+////					LCD_KIT_voidRunCommand(0x10);
+////					LCD_KIT_voidDisplayCharacter(' ');
+////					LCD_KIT_voidSetCurser(Line4,Delay_Counter/9);
+////
+////					if(Leg_9==1)
+////					{
+////						LCD_KIT_voidDisplayCharacter(0x01);
+////						Leg_9=2;
+////					}
+////					else if(Leg_9==2)
+////					{
+////						LCD_KIT_voidDisplayCharacter(0x02);
+////						Leg_9=1;
+////					}
+////				}
+////			}
+////
+////			if(Delay_Counter%8==0)
+////			{
+////				if((Delay_Counter/8==10)||(Delay_Counter/8==11)||(Delay_Counter/8==16)||(Delay_Counter/8==17))
+////				{
+////					if(Leg_8==1)
+////					{
+////						LCD_KIT_voidSetCurser(Line2,Delay_Counter/8);
+////						LCD_KIT_voidRunCommand(0x10);
+////						LCD_KIT_voidDisplayCharacter(' ');
+////						LCD_KIT_voidSetCurser(Line3,Delay_Counter/8);
+////						LCD_KIT_voidDisplayCharacter(0x01);
+////						Leg_8=2;
+////					}
+////					else if(Leg_8==2)
+////					{
+////						LCD_KIT_voidSetCurser(Line3,Delay_Counter/8);
+////						LCD_KIT_voidRunCommand(0x10);
+////						LCD_KIT_voidDisplayCharacter(' ');
+////						LCD_KIT_voidSetCurser(Line2,Delay_Counter/8);
+////						LCD_KIT_voidDisplayCharacter(0x02);
+////						Leg_8=1;
+////					}
+////				}
+////				else
+////				{
+////					LCD_KIT_voidSetCurser(Line3,Delay_Counter/8);
+////					LCD_KIT_voidRunCommand(0x10);
+////					LCD_KIT_voidDisplayCharacter(' ');
+////					LCD_KIT_voidSetCurser(Line3,Delay_Counter/8);
+////
+////					if(Leg_8==1)
+////					{
+////						LCD_KIT_voidDisplayCharacter(0x01);
+////						Leg_8=2;
+////					}
+////					else if(Leg_8==2)
+////					{
+////						LCD_KIT_voidDisplayCharacter(0x02);
+////						Leg_8=1;
+////					}
+////				}
+////			}
+////		}
+////		else
+////		{
+////			LCD_KIT_voidSetCurser(Line2,Col19);
+////			LCD_KIT_voidDisplayCharacter(' ');
+////			LCD_KIT_voidSetCurser(Line4,Col19);
+////			LCD_KIT_voidDisplayCharacter(' ');
+////			_delay_ms(100);
+////			break;
+////		}
+////	}
+////
+////	LCD_KIT_voidRunCommand(0x01);
+////	LCD_KIT_voidDisplayString(" The winner is Bary");
+////	LCD_KIT_voidSetCurser(Line2,Col0);
+////	LCD_KIT_voidDisplayString("Bary has just broken");
+////	LCD_KIT_voidSetCurser(Line3,Col0);
+////	LCD_KIT_voidDisplayString("  the WORLD RECORD");
+////
+//////setting custom character array
+////	u8 Arabic_Word[6][8]=
+////	{
+////		{0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x00},
+////		{0x01,0x01,0x01,0x01,0x01,0x01,0x1F,0x00},
+////		{0x00,0x00,0x0E,0x01,0x01,0x01,0x1E,0x00},
+////		{0x00,0x00,0x06,0x09,0x09,0x09,0x16,0x00},
+////		{0x00,0x00,0x01,0x01,0x01,0x01,0x0F,0x00},
+////		{0x00,0x06,0x09,0x09,0x07,0x01,0x01,0x00}
+////	};
+////
+////// Store characters
+////	LCD_KIT_voidStoreCustomCharacter(Arabic_Word[0],0x40);
+////	LCD_KIT_voidStoreCustomCharacter(Arabic_Word[1],0x48);
+////	LCD_KIT_voidStoreCustomCharacter(Arabic_Word[2],0x50);
+////	LCD_KIT_voidStoreCustomCharacter(Arabic_Word[3],0x58);
+////	LCD_KIT_voidStoreCustomCharacter(Arabic_Word[4],0x60);
+////	LCD_KIT_voidStoreCustomCharacter(Arabic_Word[5],0x68);
+////
+////// Setting Cursor to shift left to print Arabic word
+////	LCD_KIT_voidRunCommand(0x04);
+////
+////// Return cursor to DDRAM
+////	LCD_KIT_voidSetCurser(Line4, Col13);
+////
+////// Printing Arabic word
+////	LCD_KIT_voidDisplayCharacter(0);
+////	LCD_KIT_voidDisplayCharacter(1);
+////	LCD_KIT_voidDisplayCharacter(2);
+////	LCD_KIT_voidDisplayCharacter(3);
+////	LCD_KIT_voidDisplayCharacter(4);
+////
+////	LCD_KIT_voidDisplayCharacter(1);
+////	LCD_KIT_voidDisplayCharacter(1);
+////	LCD_KIT_voidDisplayCharacter(5);
 //
-////setting custom character array
-//	u8 Person_State[6][8]=
-//	{
-//		{0x04,0x0A,0x04,0x1F,0x04,0x04,0x0A,0x0A},
-//		{0x04,0x0A,0x05,0x0E,0x14,0x04,0x0A,0x11},
-//		{0x04,0x0A,0x14,0x0E,0x05,0x04,0x0A,0x11},
-//		{0x08,0x14,0x09,0x0A,0x04,0x0B,0x12,0x00},
-//		{0x02,0x05,0x12,0x0A,0x04,0x1A,0x09,0x00},
-//		{0x02,0x02,0x02,0x02,0x02,0x02,0x02,0x02}
-//	};
 //
-//// Store characters
-//	LCD_KIT_voidStoreCustomCharacter(Person_State[0],0x40);
-//	LCD_KIT_voidStoreCustomCharacter(Person_State[1],0x48);
-//	LCD_KIT_voidStoreCustomCharacter(Person_State[2],0x50);
-//	LCD_KIT_voidStoreCustomCharacter(Person_State[3],0x58);
-//	LCD_KIT_voidStoreCustomCharacter(Person_State[4],0x60);
-//	LCD_KIT_voidStoreCustomCharacter(Person_State[5],0x68);
+///***** Game *****/
+////
+////	u8 Way_Flag, Previous_Way_flag, Col_Index=2, Line_Index=1;
+////
+////		u8 Ball[8]={0x00,0x00,0x0E,0x1F,0x1F,0x1F,0x0E,0x00};
+////		LCD_KIT_voidStoreCustomCharacter(Ball,0x40);
+////
+////		LCD_KIT_voidSetCurser(Line1,Col0);
+////		LCD_KIT_voidDisplayCharacter(0x00);
+////
+////		while(1)
+////		{
+////			if(!DIO_u8GetPinValue(Switch_Port,Go_To_Right))
+////			{
+////				LCD_KIT_voidRunCommand(0x06);
+////				LCD_KIT_voidRunCommand(0x10);
+////				LCD_KIT_voidDisplayCharacter(' ');
+////				LCD_KIT_voidDisplayCharacter(0x00);
+////				Way_Flag=Right;
+////				Previous_Way_flag=Right;
+////				break;
+////			}
+////		}
+////
+////		while(1)
+////		{
+////			if((Col_Index == 0)||(Col_Index == 21))
+////			{
+////				LCD_KIT_voidRunCommand(0x06);
+////				LCD_KIT_voidSetCurser(Line1,Col5);
+////				LCD_KIT_voidDisplayString("Game Over");
+////				break;
+////			}
+////
+////			_delay_ms(200);
+////
+////			if(!DIO_u8GetPinValue(Switch_Port,Go_To_Right))
+////			{
+////				LCD_KIT_voidRunCommand(0x06);
+////				Way_Flag=Right;
+////				_delay_ms(200);
+////			}
+////			else if(!DIO_u8GetPinValue(Switch_Port,Go_To_Left))
+////			{
+////				LCD_KIT_voidRunCommand(0x04);
+////				Way_Flag=Left;
+////				_delay_ms(200);
+////			}
+////			else if(!DIO_u8GetPinValue(PortD,Go_To_Up))
+////			{
+////				if(Way_Flag==Right)
+////				{
+////					LCD_KIT_voidRunCommand(Left);
+////					LCD_KIT_voidDisplayCharacter(' ');
+////				}
+////				else if(Way_Flag==Left)
+////				{
+////					LCD_KIT_voidRunCommand(Right);
+////					LCD_KIT_voidDisplayCharacter(' ');
+////				}
+////
+////				if(Line_Index==1)
+////				{
+////					LCD_KIT_voidRunCommand(0x06);
+////					LCD_KIT_voidSetCurser(Line1,Col5);
+////					LCD_KIT_voidDisplayString("Game Over");
+////					break;
+////				}
+////
+////				switch(Line_Index)
+////				{
+////				case 2:
+////					if(Way_Flag==Left)
+////					{
+////						LCD_KIT_voidSetCurser(Line1,Col_Index-2); break;
+////					}
+////					else
+////					{
+////						LCD_KIT_voidSetCurser(Line1,Col_Index); break;
+////					}
+////
+////				case 3:
+////					if(Way_Flag==Left)
+////					{
+////						LCD_KIT_voidSetCurser(Line2,Col_Index-2); break;
+////					}
+////					else
+////					{
+////						LCD_KIT_voidSetCurser(Line2,Col_Index); break;
+////					}
+////
+////				case 4:
+////					if(Way_Flag==Left)
+////					{
+////						LCD_KIT_voidSetCurser(Line3,Col_Index-2); break;
+////					}
+////					else
+////					{
+////						LCD_KIT_voidSetCurser(Line3,Col_Index); break;
+////					}
+////				}
+////				Line_Index--;
+////				_delay_ms(200);
+////			}
+////			else if (!DIO_u8GetPinValue(PortD,Go_To_Down))
+////			{
+////				if(Way_Flag==Right)
+////				{
+////					LCD_KIT_voidRunCommand(Left);
+////					LCD_KIT_voidDisplayCharacter(' ');
+////				}
+////				else if(Way_Flag==Left)
+////				{
+////					LCD_KIT_voidRunCommand(Right);
+////					LCD_KIT_voidDisplayCharacter(' ');
+////				}
+////
+////				if(Line_Index==4)
+////				{
+////					LCD_KIT_voidRunCommand(0x06);
+////					LCD_KIT_voidSetCurser(Line1,Col5);
+////					LCD_KIT_voidDisplayString("Game Over");
+////					break;
+////				}
+////
+////				switch(Line_Index)
+////				{
+////				case 1:
+////					if(Way_Flag==Left)
+////					{
+////						LCD_KIT_voidSetCurser(Line2,Col_Index-2); break;
+////					}
+////					else
+////					{
+////						LCD_KIT_voidSetCurser(Line2,Col_Index); break;
+////					}
+////
+////				case 2:
+////					if(Way_Flag==Left)
+////					{
+////						LCD_KIT_voidSetCurser(Line3,Col_Index-2); break;
+////					}
+////					else
+////					{
+////						LCD_KIT_voidSetCurser(Line3,Col_Index); break;
+////					}
+////
+////				case 3:
+////					if(Way_Flag==Left)
+////					{
+////						LCD_KIT_voidSetCurser(Line4,Col_Index-2); break;
+////					}
+////					else
+////					{
+////						LCD_KIT_voidSetCurser(Line4,Col_Index); break;
+////					}
+////				}
+////				Line_Index++;
+////				_delay_ms(200);
+////			}
+////
+////			if((Way_Flag==Left)&&(Previous_Way_flag==Left))
+////			{
+////				Col_Index--;
+////				LCD_KIT_voidRunCommand(Right);
+////				LCD_KIT_voidDisplayCharacter(' ');
+////
+////				if(Col_Index > 0)
+////				{
+////					LCD_KIT_voidDisplayCharacter(0x00);
+////				}
+////			}
+////			else if((Way_Flag==Left)&&(Previous_Way_flag==Right))
+////			{
+////				LCD_KIT_voidRunCommand(Left);
+////				LCD_KIT_voidDisplayCharacter(' ');
+////				LCD_KIT_voidDisplayCharacter(0x00);
+////				Previous_Way_flag=Left;
+////				Col_Index--;
+////			}
+////			else if((Way_Flag==Right)&&(Previous_Way_flag==Right))
+////			{
+////				Col_Index++;
+////				LCD_KIT_voidRunCommand(Left);
+////				LCD_KIT_voidDisplayCharacter(' ');
+////
+////				if(Col_Index<21)
+////				{
+////					LCD_KIT_voidDisplayCharacter(0x00);
+////				}
+////			}
+////			else if((Way_Flag==Right)&&(Previous_Way_flag==Left))
+////			{
+////				LCD_KIT_voidRunCommand(Right);
+////				LCD_KIT_voidDisplayCharacter(' ');
+////				LCD_KIT_voidDisplayCharacter(0x00);
+////				Previous_Way_flag=Right;
+////				Col_Index++;
+////			}
+////
+////	}
 //
-//// Ready-Steady-Go stage
-//	LCD_KIT_voidSetCurser(Line1,Col7);
-//	LCD_KIT_voidDisplayString("Ready");
-//	_delay_ms(500);
-//	LCD_KIT_voidRunCommand(Clear_LCD);
-//
-//	LCD_KIT_voidSetCurser(Line1,Col7);
-//	LCD_KIT_voidDisplayString("Steady");
-//	_delay_ms(500);
-//	LCD_KIT_voidRunCommand(Clear_LCD);
-//
-//	LCD_KIT_voidSetCurser(Line1,Col9);
-//	LCD_KIT_voidDisplayString("GO");
-//	_delay_ms(500);
-//	LCD_KIT_voidRunCommand(Clear_LCD);
-//
-//// Setting players positions
-//	LCD_KIT_voidSetCurser(Line3,Col0);
-//	LCD_KIT_voidDisplayCharacter(0x00);
-//
-//	LCD_KIT_voidSetCurser(Line2,Col0);
-//	LCD_KIT_voidDisplayCharacter(0x00);
-//
-//	LCD_KIT_voidSetCurser(Line4,Col0);
-//	LCD_KIT_voidDisplayCharacter(0x00);
-//
-//// Setting Barriers Positions
-//	LCD_KIT_voidSetCurser(Line2,Col2);
-//	LCD_KIT_voidDisplayCharacter(0xFF);
-//	LCD_KIT_voidSetCurser(Line2,Col18);
-//	LCD_KIT_voidDisplayCharacter(0xFF);
-//
-//	LCD_KIT_voidSetCurser(Line3,Col10);
-//	LCD_KIT_voidDisplayCharacter(0xFF);
-//	LCD_KIT_voidSetCurser(Line3,Col16);
-//	LCD_KIT_voidDisplayCharacter(0xFF);
-//
-//	LCD_KIT_voidSetCurser(Line4,Col13);
-//	LCD_KIT_voidDisplayCharacter(0xFF);
-//	LCD_KIT_voidSetCurser(Line4,Col17);
-//	LCD_KIT_voidDisplayCharacter(0xFF);
-//
-//// Setting End line Positions
-//	LCD_KIT_voidSetCurser(Line2,Col19);
-//	LCD_KIT_voidDisplayCharacter(0x05);
-//	LCD_KIT_voidSetCurser(Line3,Col19);
-//	LCD_KIT_voidDisplayCharacter(0x05);
-//	LCD_KIT_voidSetCurser(Line4,Col19);
-//	LCD_KIT_voidDisplayCharacter(0x05);
-//
-//// Start Game
-//	LCD_KIT_voidSetCurser(Line1,Col4);
-//	LCD_KIT_voidDisplayString("Run Bary Run");
-//
-//	while(1)
-//	{
-//		if(Delay_Counter<153)
-//		{
-//			_delay_ms(10);
-//			Delay_Counter++;
-//
-//			if(Delay_Counter%10==0)
-//			{
-//				if((Delay_Counter/10==2)||(Delay_Counter/10==3)||(Delay_Counter/10==18)||(Delay_Counter/10==19))
-//				{
-//					if(Leg_10==1)
-//					{
-//						LCD_KIT_voidSetCurser(Line1,Delay_Counter/10);
-//						LCD_KIT_voidRunCommand(0x10);
-//						LCD_KIT_voidDisplayCharacter(' ');
-//						LCD_KIT_voidSetCurser(Line2,Delay_Counter/10);
-//						LCD_KIT_voidDisplayCharacter(0x03);
-//						Leg_10=2;
-//					}
-//					else if(Leg_10==2)
-//					{
-//						LCD_KIT_voidSetCurser(Line2,Delay_Counter/10);
-//						LCD_KIT_voidRunCommand(0x10);
-//						LCD_KIT_voidDisplayCharacter(' ');
-//						LCD_KIT_voidSetCurser(Line1,Delay_Counter/10);
-//						LCD_KIT_voidDisplayCharacter(0x04);
-//						Leg_10=1;
-//					}
-//				}
-//				else
-//				{
-//					LCD_KIT_voidSetCurser(Line2,Delay_Counter/10);
-//					LCD_KIT_voidRunCommand(0x10);
-//					LCD_KIT_voidDisplayCharacter(' ');
-//					LCD_KIT_voidSetCurser(Line2,Delay_Counter/10);
-//
-//					if(Leg_10==1)
-//					{
-//						LCD_KIT_voidDisplayCharacter(0x01);
-//						Leg_10=2;
-//					}
-//					else if(Leg_10==2)
-//					{
-//						LCD_KIT_voidDisplayCharacter(0x02);
-//						Leg_10=1;
-//					}
-//				}
-//			}
-//
-//			if(Delay_Counter%9==0)
-//			{
-//				if((Delay_Counter/9==13)||(Delay_Counter/9==14)||(Delay_Counter/9==17)||(Delay_Counter/9==18))
-//				{
-//					if(Leg_9==1)
-//					{
-//						LCD_KIT_voidSetCurser(Line4,Delay_Counter/9);
-//						LCD_KIT_voidRunCommand(0x10);
-//						LCD_KIT_voidDisplayCharacter(' ');
-//						LCD_KIT_voidSetCurser(Line3,Delay_Counter/9);
-//						LCD_KIT_voidDisplayCharacter(0x01);
-//						Leg_9=2;
-//					}
-//					else if(Leg_9==2)
-//					{
-//						LCD_KIT_voidSetCurser(Line3,Delay_Counter/9);
-//						LCD_KIT_voidRunCommand(0x10);
-//						LCD_KIT_voidDisplayCharacter(' ');
-//						LCD_KIT_voidSetCurser(Line4,Delay_Counter/9);
-//						LCD_KIT_voidDisplayCharacter(0x02);
-//						Leg_9=1;
-//					}
-//				}
-//				else
-//				{
-//					LCD_KIT_voidSetCurser(Line4,Delay_Counter/9);
-//					LCD_KIT_voidRunCommand(0x10);
-//					LCD_KIT_voidDisplayCharacter(' ');
-//					LCD_KIT_voidSetCurser(Line4,Delay_Counter/9);
-//
-//					if(Leg_9==1)
-//					{
-//						LCD_KIT_voidDisplayCharacter(0x01);
-//						Leg_9=2;
-//					}
-//					else if(Leg_9==2)
-//					{
-//						LCD_KIT_voidDisplayCharacter(0x02);
-//						Leg_9=1;
-//					}
-//				}
-//			}
-//
-//			if(Delay_Counter%8==0)
-//			{
-//				if((Delay_Counter/8==10)||(Delay_Counter/8==11)||(Delay_Counter/8==16)||(Delay_Counter/8==17))
-//				{
-//					if(Leg_8==1)
-//					{
-//						LCD_KIT_voidSetCurser(Line2,Delay_Counter/8);
-//						LCD_KIT_voidRunCommand(0x10);
-//						LCD_KIT_voidDisplayCharacter(' ');
-//						LCD_KIT_voidSetCurser(Line3,Delay_Counter/8);
-//						LCD_KIT_voidDisplayCharacter(0x01);
-//						Leg_8=2;
-//					}
-//					else if(Leg_8==2)
-//					{
-//						LCD_KIT_voidSetCurser(Line3,Delay_Counter/8);
-//						LCD_KIT_voidRunCommand(0x10);
-//						LCD_KIT_voidDisplayCharacter(' ');
-//						LCD_KIT_voidSetCurser(Line2,Delay_Counter/8);
-//						LCD_KIT_voidDisplayCharacter(0x02);
-//						Leg_8=1;
-//					}
-//				}
-//				else
-//				{
-//					LCD_KIT_voidSetCurser(Line3,Delay_Counter/8);
-//					LCD_KIT_voidRunCommand(0x10);
-//					LCD_KIT_voidDisplayCharacter(' ');
-//					LCD_KIT_voidSetCurser(Line3,Delay_Counter/8);
-//
-//					if(Leg_8==1)
-//					{
-//						LCD_KIT_voidDisplayCharacter(0x01);
-//						Leg_8=2;
-//					}
-//					else if(Leg_8==2)
-//					{
-//						LCD_KIT_voidDisplayCharacter(0x02);
-//						Leg_8=1;
-//					}
-//				}
-//			}
-//		}
-//		else
-//		{
-//			LCD_KIT_voidSetCurser(Line2,Col19);
-//			LCD_KIT_voidDisplayCharacter(' ');
-//			LCD_KIT_voidSetCurser(Line4,Col19);
-//			LCD_KIT_voidDisplayCharacter(' ');
-//			_delay_ms(100);
-//			break;
-//		}
-//	}
-//
-//	LCD_KIT_voidRunCommand(0x01);
-//	LCD_KIT_voidDisplayString(" The winner is Bary");
-//	LCD_KIT_voidSetCurser(Line2,Col0);
-//	LCD_KIT_voidDisplayString("Bary has just broken");
-//	LCD_KIT_voidSetCurser(Line3,Col0);
-//	LCD_KIT_voidDisplayString("  the WORLD RECORD");
-//
-////setting custom character array
-//	u8 Arabic_Word[6][8]=
-//	{
-//		{0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x00},
-//		{0x01,0x01,0x01,0x01,0x01,0x01,0x1F,0x00},
-//		{0x00,0x00,0x0E,0x01,0x01,0x01,0x1E,0x00},
-//		{0x00,0x00,0x06,0x09,0x09,0x09,0x16,0x00},
-//		{0x00,0x00,0x01,0x01,0x01,0x01,0x0F,0x00},
-//		{0x00,0x06,0x09,0x09,0x07,0x01,0x01,0x00}
-//	};
-//
-//// Store characters
-//	LCD_KIT_voidStoreCustomCharacter(Arabic_Word[0],0x40);
-//	LCD_KIT_voidStoreCustomCharacter(Arabic_Word[1],0x48);
-//	LCD_KIT_voidStoreCustomCharacter(Arabic_Word[2],0x50);
-//	LCD_KIT_voidStoreCustomCharacter(Arabic_Word[3],0x58);
-//	LCD_KIT_voidStoreCustomCharacter(Arabic_Word[4],0x60);
-//	LCD_KIT_voidStoreCustomCharacter(Arabic_Word[5],0x68);
-//
-//// Setting Cursor to shift left to print Arabic word
-//	LCD_KIT_voidRunCommand(0x04);
-//
-//// Return cursor to DDRAM
-//	LCD_KIT_voidSetCurser(Line4, Col13);
-//
-//// Printing Arabic word
-//	LCD_KIT_voidDisplayCharacter(0);
-//	LCD_KIT_voidDisplayCharacter(1);
-//	LCD_KIT_voidDisplayCharacter(2);
-//	LCD_KIT_voidDisplayCharacter(3);
-//	LCD_KIT_voidDisplayCharacter(4);
-//
-//	LCD_KIT_voidDisplayCharacter(1);
-//	LCD_KIT_voidDisplayCharacter(1);
-//	LCD_KIT_voidDisplayCharacter(5);
-
-
-/***** Game *****/
-
-	u8 Way_Flag, Previous_Way_flag, Col_Index=2, Line_Index=1;
-
-		u8 Ball[8]={0x00,0x00,0x0E,0x1F,0x1F,0x1F,0x0E,0x00};
-		LCD_KIT_voidStoreCustomCharacter(Ball,0x40);
-
-		LCD_KIT_voidSetCurser(Line1,Col0);
-		LCD_KIT_voidDisplayCharacter(0x00);
-
-		while(1)
-		{
-			if(!DIO_u8GetPinValue(Switch_Port,Go_To_Right))
-			{
-				LCD_KIT_voidRunCommand(0x06);
-				LCD_KIT_voidRunCommand(0x10);
-				LCD_KIT_voidDisplayCharacter(' ');
-				LCD_KIT_voidDisplayCharacter(0x00);
-				Way_Flag=Right;
-				Previous_Way_flag=Right;
-				break;
-			}
-		}
-
-		while(1)
-		{
-			if((Col_Index == 0)||(Col_Index == 21))
-			{
-				LCD_KIT_voidRunCommand(0x06);
-				LCD_KIT_voidSetCurser(Line1,Col5);
-				LCD_KIT_voidDisplayString("Game Over");
-				break;
-			}
-
-			_delay_ms(200);
-
-			if(!DIO_u8GetPinValue(Switch_Port,Go_To_Right))
-			{
-				LCD_KIT_voidRunCommand(0x06);
-				Way_Flag=Right;
-				_delay_ms(200);
-			}
-			else if(!DIO_u8GetPinValue(Switch_Port,Go_To_Left))
-			{
-				LCD_KIT_voidRunCommand(0x04);
-				Way_Flag=Left;
-				_delay_ms(200);
-			}
-			else if(!DIO_u8GetPinValue(PortD,Go_To_Up))
-			{
-				if(Way_Flag==Right)
-				{
-					LCD_KIT_voidRunCommand(Left);
-					LCD_KIT_voidDisplayCharacter(' ');
-				}
-				else if(Way_Flag==Left)
-				{
-					LCD_KIT_voidRunCommand(Right);
-					LCD_KIT_voidDisplayCharacter(' ');
-				}
-
-				if(Line_Index==1)
-				{
-					LCD_KIT_voidRunCommand(0x06);
-					LCD_KIT_voidSetCurser(Line1,Col5);
-					LCD_KIT_voidDisplayString("Game Over");
-					break;
-				}
-
-				switch(Line_Index)
-				{
-				case 2:
-					if(Way_Flag==Left)
-					{
-						LCD_KIT_voidSetCurser(Line1,Col_Index-2); break;
-					}
-					else
-					{
-						LCD_KIT_voidSetCurser(Line1,Col_Index); break;
-					}
-
-				case 3:
-					if(Way_Flag==Left)
-					{
-						LCD_KIT_voidSetCurser(Line2,Col_Index-2); break;
-					}
-					else
-					{
-						LCD_KIT_voidSetCurser(Line2,Col_Index); break;
-					}
-
-				case 4:
-					if(Way_Flag==Left)
-					{
-						LCD_KIT_voidSetCurser(Line3,Col_Index-2); break;
-					}
-					else
-					{
-						LCD_KIT_voidSetCurser(Line3,Col_Index); break;
-					}
-				}
-				Line_Index--;
-				_delay_ms(200);
-			}
-			else if (!DIO_u8GetPinValue(PortD,Go_To_Down))
-			{
-				if(Way_Flag==Right)
-				{
-					LCD_KIT_voidRunCommand(Left);
-					LCD_KIT_voidDisplayCharacter(' ');
-				}
-				else if(Way_Flag==Left)
-				{
-					LCD_KIT_voidRunCommand(Right);
-					LCD_KIT_voidDisplayCharacter(' ');
-				}
-
-				if(Line_Index==4)
-				{
-					LCD_KIT_voidRunCommand(0x06);
-					LCD_KIT_voidSetCurser(Line1,Col5);
-					LCD_KIT_voidDisplayString("Game Over");
-					break;
-				}
-
-				switch(Line_Index)
-				{
-				case 1:
-					if(Way_Flag==Left)
-					{
-						LCD_KIT_voidSetCurser(Line2,Col_Index-2); break;
-					}
-					else
-					{
-						LCD_KIT_voidSetCurser(Line2,Col_Index); break;
-					}
-
-				case 2:
-					if(Way_Flag==Left)
-					{
-						LCD_KIT_voidSetCurser(Line3,Col_Index-2); break;
-					}
-					else
-					{
-						LCD_KIT_voidSetCurser(Line3,Col_Index); break;
-					}
-
-				case 3:
-					if(Way_Flag==Left)
-					{
-						LCD_KIT_voidSetCurser(Line4,Col_Index-2); break;
-					}
-					else
-					{
-						LCD_KIT_voidSetCurser(Line4,Col_Index); break;
-					}
-				}
-				Line_Index++;
-				_delay_ms(200);
-			}
-
-			if((Way_Flag==Left)&&(Previous_Way_flag==Left))
-			{
-				Col_Index--;
-				LCD_KIT_voidRunCommand(Right);
-				LCD_KIT_voidDisplayCharacter(' ');
-
-				if(Col_Index > 0)
-				{
-					LCD_KIT_voidDisplayCharacter(0x00);
-				}
-			}
-			else if((Way_Flag==Left)&&(Previous_Way_flag==Right))
-			{
-				LCD_KIT_voidRunCommand(Left);
-				LCD_KIT_voidDisplayCharacter(' ');
-				LCD_KIT_voidDisplayCharacter(0x00);
-				Previous_Way_flag=Left;
-				Col_Index--;
-			}
-			else if((Way_Flag==Right)&&(Previous_Way_flag==Right))
-			{
-				Col_Index++;
-				LCD_KIT_voidRunCommand(Left);
-				LCD_KIT_voidDisplayCharacter(' ');
-
-				if(Col_Index<21)
-				{
-					LCD_KIT_voidDisplayCharacter(0x00);
-				}
-			}
-			else if((Way_Flag==Right)&&(Previous_Way_flag==Left))
-			{
-				LCD_KIT_voidRunCommand(Right);
-				LCD_KIT_voidDisplayCharacter(' ');
-				LCD_KIT_voidDisplayCharacter(0x00);
-				Previous_Way_flag=Right;
-				Col_Index++;
-			}
-
-	}
-
-	return 0;
-}
+//	return 0;
+//}
 
 /*************************KEYPAD Application***********************************/
 
-//u16 Power(u8 x , u8 y)
-//{
-//	u8 res=1;
-//
-//	if(y==0)
-//	{
-//		return res;
-//	}
-//
-//	while(y!=0)
-//	{
-//		res*=x;
-//		y--;
-//	}
-//
-//	return res;
-//}
+u16 Power(u8 x , u8 y)
+{
+	u8 res=1;
 
+	if(y==0)
+	{
+		return res;
+	}
+
+	while(y!=0)
+	{
+		res*=x;
+		y--;
+	}
+
+	return res;
+}
+//
 //int main(void)
 //{
 //	LCD_KIT_voidInitialization();
@@ -890,3 +908,400 @@ int main(void)
 //
 //	return 0;
 //}//
+
+
+/************************* Interrupts *****************************************/
+
+/*
+void Toggle(void)
+{
+	DIO_voidTogglePin(PortB,Pin7);
+
+	_delay_ms(200);
+}
+
+int main(void)
+{
+	DIO_voidInitialization();
+
+	EXT_INT_voidInitialization();
+
+	EXTI1_CallBack(Toggle);
+	//EXTI1_CallBack(DIO_voidTogglePin(PortB,Pin7));
+
+	GIE_Enable();
+	EXTI1_Enable();
+
+	while(1)
+	{
+
+	}
+
+
+	return 0;
+}
+*/
+
+/**************************** ADC *********************************************/
+
+//
+//void ADC_voidReadConversionValue(void)
+//{
+////	u16 Value=ADCL;
+////
+////	if(GET_BIT(ADCH,Pin0))
+////	{
+////		Value+=256;
+////	}
+////	if(GET_BIT(ADCH,Pin1))
+////	{
+////		Value+=512;
+////	}
+//
+//	LCD_KIT_voidRunCommand(0x01);
+//	LCD_KIT_voidDisplayBigNumber((u16)(ADCL|(ADCH<<8)));
+//
+//	SET_BIT(ADCSRA,ADIF);
+//
+//	return ;
+//}
+//
+//int main(void)
+//{
+//	DIO_voidInitialization();
+//
+//	ADC_voidInitialization();
+//	LCD_KIT_voidInitialization();
+//
+//	ADC_CallBack(ADC_voidReadConversionValue);
+//
+//	GIE_Enable();
+//	//ADC_voidInterruptEnable();
+//
+//
+//
+//	while(1)
+//	{
+//		ADC_voidStartConversion(0);
+//
+//		ADC_voidReadConversionValue_Polling();
+//		LCD_KIT_voidDisplayString("Finally");
+//		//_delay_ms(500);
+//	}
+//
+//	return 0;
+//}
+//
+
+/*************************** USART ********************************************/
+
+u8 UDR_Global;
+/*
+u8 temp;
+
+void USART_voidSendData_Intrrupt(u8 Character)
+{
+	UDR=Character;
+
+	CLR_BIT(UCSRA,UDRE);
+
+	return;
+}
+
+void USART_voidRecieveData_Interrupt(void)
+{
+	//LCD_KIT_voidDisplayCharacter('A');
+
+	UDR_Global=UDR;
+	temp=UDR;
+
+	LCD_KIT_voidDisplayCharacter(UDR_Global);
+	LCD_KIT_voidDisplayCharacter(temp);
+	//SET_BIT(UCSRA,RXC);
+
+//	CLR_BIT(UCSRB,RXEN);
+//	SET_BIT(UCSRB,RXEN);
+
+	return;
+}
+
+int main(void)
+{
+	DIO_voidInitialization();
+
+	LCD_KIT_voidInitialization();
+
+	USART_voidInitialization();
+
+	USART_RecieveCallBack(USART_voidRecieveData_Interrupt);
+	//USART_SendCallBack(USART_voidSendData_Intrrupt);
+
+	GIE_Enable();
+
+//	_delay_ms(200);
+//	USART_voidSendData_Polling(65);
+//	_delay_ms(200);
+//	USART_voidSendData_Polling('h');
+//	_delay_ms(200);
+//	USART_voidSendData_Polling('m');
+//	_delay_ms(200);
+//	USART_voidSendData_Polling('e');
+//	_delay_ms(200);
+//	USART_voidSendData_Polling('d');
+//	_delay_ms(200);
+
+//	USART_voidRecieveData_Polling();
+//	LCD_KIT_voidDisplayCharacter(UDR_Global);
+//
+//	USART_voidRecieveData_Polling();
+//	LCD_KIT_voidDisplayCharacter(UDR_Global);
+//
+//	USART_voidRecieveData_Polling();
+//	LCD_KIT_voidDisplayCharacter(UDR_Global);
+
+	while(1)
+	{
+//		USART_voidRecieveData_Polling();
+//		LCD_KIT_voidDisplayCharacter(UDR_Global);
+//		_delay_ms(1000);
+
+	}
+
+
+	return 0;
+}
+*/
+
+/*************************** Timers *******************************************/
+
+volatile u16 Counter=0;
+void Timer0_OVF_Interrupt(void)
+{
+	Counter++;
+	//TCNT0=6;
+
+	if(Counter==4000)
+	{
+		DIO_voidTogglePin(PortB,Pin5);
+		Counter=0;
+	}
+}
+
+volatile u8 Counter_Seconds=0;
+volatile u8 Counter_Minuts=0;
+volatile u8 Counter_Hours=0;
+void Timer0_CTC_Interrupt(void)
+{
+	Counter++;
+
+	if(Counter==4000)
+	{
+		DIO_voidTogglePin(PortB,Pin5);
+		Counter_Seconds++;
+		Counter=0;
+	}
+}
+
+u16 OVF_Counter=0;
+void Timer1_OVF_interrupt(void)
+{
+	OVF_Counter++;
+//	LCD_KIT_voidDisplayCharacter('*');
+//	LCD_KIT_voidDisplayCharacter(OVF_Counter+48);
+
+	SET_BIT(TIFR,TOV1);
+}
+
+volatile u8 flag=0;
+volatile u32 T_0=0;
+volatile u32 T_1;
+volatile u32 T_2;
+volatile u32 T_3;
+void Timer1_ICR_interrupt(void)
+{
+	if(flag==0)
+	{
+		T_0=ICR1+OVF_Counter*65536;
+//		TCNT1=0;
+//		OVF_Counter=0;
+		//Timer1_voidCaptureEdgeSelect(Falling_Edge);
+		SET_BIT(TCCR1B,TCCR1B_ICES1);
+		flag++;
+	}
+	else if(flag==1)
+	{
+		T_1=ICR1+OVF_Counter*65536;
+//		TCNT1=0;
+//		OVF_Counter=0;
+		//Timer1_voidCaptureEdgeSelect(Rising_Edge);
+		CLR_BIT(TCCR1B,TCCR1B_ICES1);
+		flag++;
+	}
+	else if(flag==2)
+	{
+		T_2=ICR1+OVF_Counter*65536;
+//		TCNT1=0;
+//		OVF_Counter=0;
+		//Timer1_voidCaptureEdgeSelect(Falling_Edge);
+		SET_BIT(TCCR1B,TCCR1B_ICES1);
+		flag++;
+	}
+	else if(flag==3)
+		{
+			T_3=ICR1+OVF_Counter*65536;
+			flag++;
+
+			Timer1_voidICRInterruptDisable();
+			Timer1_voidOVFInterruptDisable();
+		}
+}
+
+//
+//int main(void)
+//{
+///************Timer0**************/
+////	Timer0_voidInitialization();
+////	LCD_KIT_voidInitialization();
+////	DIO_voidInitialization();
+////
+////	//Timer0OVF_CallBack(Timer0_OVF_Interrupt);
+////	Timer0CTC_CallBack(Timer0_CTC_Interrupt);
+////
+////	LCD_KIT_voidDisplayString("00:00:00");
+////
+////	//GIE_Enable();
+////
+////	while(1)
+////	{
+////		Counter_Seconds++;
+//////			LCD_KIT_voidRunCommand(Clear_LCD);
+//////			LCD_KIT_voidSetCurser(Line1,Col0);
+//////			//LCD_KIT_voidDisplayBigNumber(Counter_Seconds);
+//////			LCD_KIT_voidDisplayCharacter(Counter_Seconds+48);
+//////			_delay_ms(100);
+////
+////		if(Counter_Seconds<9)
+////		{
+////			LCD_KIT_voidSetCurser(Line1,Col7);
+////			LCD_KIT_voidDisplayCharacter(Counter_Seconds+48);
+////			//_delay_ms(1000);
+////		}
+////		else if(Counter_Seconds<60)
+////		{
+////			LCD_KIT_voidSetCurser(Line1,Col6);
+////			LCD_KIT_voidDisplayBigNumber(Counter_Seconds);
+////			//_delay_ms(1000);
+////
+////		}
+////		else if(Counter_Seconds==60)
+////		{
+////			LCD_KIT_voidSetCurser(Line1,Col6);
+////			LCD_KIT_voidDisplayCharacter('0');
+////			LCD_KIT_voidDisplayCharacter('0');
+////			Counter_Minuts++;
+////		}
+////
+////		//LCD_KIT_voidDisplayCharacter(Counter_Seconds+48);
+////
+////	}
+//
+///******Timer1 Servo Motor*****/
+////	DIO_voidInitialization();
+////	Timer1_voidInitialization();
+////
+////	Timer1_voidSetFrequency(50);
+////
+////
+////	while(1)
+////	{
+////		Timer1_voidSetDutyCycle(50);
+////		_delay_ms(500);
+////
+////		Timer1_voidSetDutyCycle(60);
+////		_delay_ms(500);
+////
+////		Timer1_voidSetDutyCycle(70);
+////		_delay_ms(500);
+////
+////		Timer1_voidSetDutyCycle(75);
+////		_delay_ms(500);
+////
+////		Timer1_voidSetDutyCycle(80);
+////		_delay_ms(500);
+////
+////		Timer1_voidSetDutyCycle(90);
+////		_delay_ms(500);
+////
+////		Timer1_voidSetDutyCycle(100);
+////		_delay_ms(500);
+////	}
+//
+///***** ICU *****/
+////
+////	Timer1ICR_CallBack(Timer1_ICR_interrupt);
+////	Timer1OVF_CallBack(Timer1_OVF_interrupt);
+////
+////	DIO_voidInitialization();
+////	Timer0_voidInitialization();
+////	Timer1_voidInitialization();
+////
+////	LCD_KIT_voidInitialization();
+////
+////	//_delay_ms(501);
+////	//_delay_ms(534);
+////
+////	//Timer1_voidCaptureEdgeSelect(Rising_Edge);
+////	CLR_BIT(TCCR1B,TCCR1B_ICES1);
+////
+////	GIE_Enable();
+////	Timer1_voidOVFInterruptEnable();
+////	Timer1_voidICRInterruptEnable();
+////
+////
+////	while(1)
+////	{
+//////		LCD_KIT_voidSetCurser(Line1,Col0);
+//////		LCD_KIT_voidDisplayBigNumber(T_0);
+//////		LCD_KIT_voidSetCurser(Line2,Col0);
+//////		LCD_KIT_voidDisplayBigNumber(T_1-T_0);
+//////		LCD_KIT_voidSetCurser(Line3,Col0);
+//////		LCD_KIT_voidDisplayBigNumber(T_2-T_0);
+//////		LCD_KIT_voidSetCurser(Line4,Col0);
+//////		LCD_KIT_voidDisplayBigNumber(T_3-T_0);
+////
+////		if(flag==3)
+////		{
+////			LCD_KIT_voidSetCurser(Line1,Col0);
+////			LCD_KIT_voidDisplayString("Period is ");
+////			LCD_KIT_voidDisplayBigNumber((T_2-T_0)/8);
+////			LCD_KIT_voidDisplayString(" Ms");
+////
+////			LCD_KIT_voidSetCurser(Line2,Col0);
+////			LCD_KIT_voidDisplayString("Duty Cycle is ");
+////			LCD_KIT_voidDisplayBigNumber((((float)(T_2-T_1))/(T_2-T_0))*100);
+////			LCD_KIT_voidDisplayCharacter('%');
+////		}
+////
+////	}
+//
+//	return 0;
+//}
+//
+
+/****************************** I2C *******************************************/
+
+int main(void)
+{
+
+}
+
+
+
+
+
+
+
+
+
+
+

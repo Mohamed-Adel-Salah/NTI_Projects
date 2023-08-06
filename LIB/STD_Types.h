@@ -8,6 +8,8 @@
 #ifndef COTS_LIB_STD_TYPES_H_
 #define COTS_LIB_STD_TYPES_H_
 
+#define NULL ((void*)0)
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned long int u32;

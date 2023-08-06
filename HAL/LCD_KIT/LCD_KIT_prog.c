@@ -21,13 +21,15 @@ void LCD_KIT_voidInitialization(void)
 	DIO_voidSetPinDirection(PortA,Pin2,Output);
 	DIO_voidSetPinDirection(PortA,Pin3,Output);
 
-	DIO_voidSetPinDirection(PortB,Pin0,Output);
+	//DIO_voidSetPinDirection(PortB,Pin0,Output);
+	DIO_voidSetPinDirection(PortB,Pin7,Output);
 	DIO_voidSetPinDirection(PortB,Pin1,Output);
 	DIO_voidSetPinDirection(PortB,Pin2,Output);
 	DIO_voidSetPinDirection(PortB,Pin4,Output);
 
 	_delay_ms(40);
-	DIO_voidSetPinValue(PortB,Pin0,Low);
+	//DIO_voidSetPinValue(PortB,Pin0,Low);
+	DIO_voidSetPinValue(PortB,Pin7,Low);
 	DIO_voidSetPinValue(PortB,Pin1,High);
 	DIO_voidSetPinValue(PortB,Pin2,Low);
 	DIO_voidSetPinValue(PortB,Pin4,Low);
@@ -60,7 +62,8 @@ void LCD_KIT_voidDisplayCharacter(u8 character)
 	DIO_voidSetPinValue(PortB,Pin4,GET_BIT(character,Pin7));
 	DIO_voidSetPinValue(PortB,Pin2,GET_BIT(character,Pin6));
 	DIO_voidSetPinValue(PortB,Pin1,GET_BIT(character,Pin5));
-	DIO_voidSetPinValue(PortB,Pin0,GET_BIT(character,Pin4));
+	//DIO_voidSetPinValue(PortB,Pin0,GET_BIT(character,Pin4));
+	DIO_voidSetPinValue(PortB,Pin7,GET_BIT(character,Pin4));
 
 	DIO_voidSetPinValue(PortA,Pin2,High);
 	_delay_ms(2);
@@ -70,7 +73,8 @@ void LCD_KIT_voidDisplayCharacter(u8 character)
 	DIO_voidSetPinValue(PortB,Pin4,GET_BIT(character,Pin3));
 	DIO_voidSetPinValue(PortB,Pin2,GET_BIT(character,Pin2));
 	DIO_voidSetPinValue(PortB,Pin1,GET_BIT(character,Pin1));
-	DIO_voidSetPinValue(PortB,Pin0,GET_BIT(character,Pin0));
+	//DIO_voidSetPinValue(PortB,Pin0,GET_BIT(character,Pin0));
+	DIO_voidSetPinValue(PortB,Pin7,GET_BIT(character,Pin0));
 
 	DIO_voidSetPinValue(PortA,Pin2,High);
 	_delay_ms(2);
@@ -87,7 +91,8 @@ void LCD_KIT_voidRunCommand(u8 command)
 	DIO_voidSetPinValue(PortB,Pin4,GET_BIT(command,Pin7));
 	DIO_voidSetPinValue(PortB,Pin2,GET_BIT(command,Pin6));
 	DIO_voidSetPinValue(PortB,Pin1,GET_BIT(command,Pin5));
-	DIO_voidSetPinValue(PortB,Pin0,GET_BIT(command,Pin4));
+	//DIO_voidSetPinValue(PortB,Pin0,GET_BIT(command,Pin4));
+	DIO_voidSetPinValue(PortB,Pin7,GET_BIT(command,Pin4));
 
 	DIO_voidSetPinValue(PortA,Pin2,High);
 	_delay_ms(2);
@@ -97,7 +102,8 @@ void LCD_KIT_voidRunCommand(u8 command)
 	DIO_voidSetPinValue(PortB,Pin4,GET_BIT(command,Pin3));
 	DIO_voidSetPinValue(PortB,Pin2,GET_BIT(command,Pin2));
 	DIO_voidSetPinValue(PortB,Pin1,GET_BIT(command,Pin1));
-	DIO_voidSetPinValue(PortB,Pin0,GET_BIT(command,Pin0));
+	//DIO_voidSetPinValue(PortB,Pin0,GET_BIT(command,Pin0));
+	DIO_voidSetPinValue(PortB,Pin7,GET_BIT(command,Pin0));
 
 	DIO_voidSetPinValue(PortA,Pin2,High);
 	_delay_ms(2);
@@ -132,7 +138,7 @@ void LCD_KIT_voidDisplayCustomCharacter(u8 *Str)
 }
 */
 
-void LCD_KIT_voidDisplayBigNumber(u16 Number)
+void LCD_KIT_voidDisplayBigNumber(u32 Number)
 {
 	if(Number<=9)
 	{
@@ -156,7 +162,7 @@ void LCD_KIT_voidDisplayBigNumber(u16 Number)
 		LCD_KIT_voidDisplayCharacter((Number/10)%10+48);
 		LCD_KIT_voidDisplayCharacter(Number%10+48);
 	}
-	else
+	else if(Number<=99999)
 	{
 		LCD_KIT_voidDisplayCharacter(Number/10000+48);
 		LCD_KIT_voidDisplayCharacter((Number/1000)%10+48);
@@ -164,6 +170,25 @@ void LCD_KIT_voidDisplayBigNumber(u16 Number)
 		LCD_KIT_voidDisplayCharacter((Number/10)%10+48);
 		LCD_KIT_voidDisplayCharacter(Number%10+48);
 	}
+	else if(Number<=999999)
+		{
+			LCD_KIT_voidDisplayCharacter(Number/100000+48);
+			LCD_KIT_voidDisplayCharacter((Number/10000)%10+48);
+			LCD_KIT_voidDisplayCharacter((Number/1000)%10+48);
+			LCD_KIT_voidDisplayCharacter((Number/100)%10+48);
+			LCD_KIT_voidDisplayCharacter((Number/10)%10+48);
+			LCD_KIT_voidDisplayCharacter(Number%10+48);
+		}
+	else if(Number<=9999999)
+			{
+				LCD_KIT_voidDisplayCharacter(Number/1000000+48);
+				LCD_KIT_voidDisplayCharacter((Number/100000)%10+48);
+				LCD_KIT_voidDisplayCharacter((Number/10000)%10+48);
+				LCD_KIT_voidDisplayCharacter((Number/1000)%10+48);
+				LCD_KIT_voidDisplayCharacter((Number/100)%10+48);
+				LCD_KIT_voidDisplayCharacter((Number/10)%10+48);
+				LCD_KIT_voidDisplayCharacter(Number%10+48);
+			}
 
 	return;
 }

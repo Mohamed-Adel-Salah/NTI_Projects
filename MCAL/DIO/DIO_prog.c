@@ -17,15 +17,36 @@ void DIO_voidInitialization (void)
 //Depends on Application
 
 /***** Game *****/
-	DIO_voidSetPinDirection(PortD,Pin5,Input);
-	DIO_voidSetPinDirection(PortD,Pin3,Input);
-	DIO_voidSetPinDirection(PortD,Pin7,Input);
-	DIO_voidSetPinDirection(PortD,Pin6,Input);
+//	DIO_voidSetPinDirection(PortD,Pin5,Input);
+//	DIO_voidSetPinDirection(PortD,Pin3,Input);
+//	DIO_voidSetPinDirection(PortD,Pin7,Input);
+//	DIO_voidSetPinDirection(PortD,Pin6,Input);
+//
+//	DIO_voidSetPinValue(PortD,Pin5,High);
+//	DIO_voidSetPinValue(PortD,Pin3,High);
+//	DIO_voidSetPinValue(PortD,Pin7,High);
+//	DIO_voidSetPinValue(PortD,Pin6,High);
 
-	DIO_voidSetPinValue(PortD,Pin5,High);
-	DIO_voidSetPinValue(PortD,Pin3,High);
-	DIO_voidSetPinValue(PortD,Pin7,High);
-	DIO_voidSetPinValue(PortD,Pin6,High);
+/***** EXT_INT*****/
+//	DIO_voidSetPinDirection(PortB,Pin7,Output);
+//	DIO_voidSetPinDirection(PortD,Pin3,Input);
+//
+//	DIO_voidSetPinValue(PortB,Pin7,Low);
+//	DIO_voidSetPinValue(PortD,Pin3,High);
+
+/***** Timer as a counter ****/
+//	DIO_voidSetPinDirection(PortB,Pin0,Input);
+//	DIO_voidSetPinValue(PortB,Pin0,High);
+//
+//	DIO_voidSetPinDirection(PortB,Pin5,Output);
+//	DIO_voidSetPinValue(PortB,Pin5,High);
+
+/***** Timer1 OC1 Pin*****/
+//	// OC1A Pin
+	DIO_voidSetPinDirection(PortD,Pin5,Output);
+
+	DIO_voidSetPinDirection(PortB,Pin3,Output);
+	DIO_voidSetPinDirection(PortD,Pin6,Input);
 }
 
 void 	DIO_voidSetPinDirection (u8 PortId,u8 PinId,u8 Direction)

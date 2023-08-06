@@ -9,5 +9,4 @@
 #define COTS_MCAL_DIO_DIO_PRIV_H_
 
 
-
 #endif /* COTS_MCAL_DIO_DIO_PRIV_H_ */

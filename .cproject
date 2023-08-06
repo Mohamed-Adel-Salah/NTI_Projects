@@ -37,6 +37,12 @@
 									<listOptionValue builtIn="false" value="&quot;C:\Users\hp\Desktop\NTI\COTS\MCAL\DIO&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Users\hp\Desktop\NTI\COTS\HAL\LCD_KIT&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Users\hp\Desktop\NTI\COTS\HAL\KEYBAD&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\hp\Desktop\NTI\COTS\MCAL\GIE&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\hp\Desktop\NTI\COTS\MCAL\EXT_INT&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\hp\Desktop\NTI\COTS\MCAL\ADC&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\hp\Desktop\NTI\COTS\MCAL\USART&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\hp\Desktop\NTI\COTS\MCAL\Timer1&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\hp\Desktop\NTI\COTS\MCAL\Timer0&quot;"/>
 								</option>
 								<inputType id="de.innot.avreclipse.compiler.winavr.input.1415922985" name="C Source Files" superClass="de.innot.avreclipse.compiler.winavr.input"/>
 							</tool>
@@ -140,4 +146,5 @@
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="de.innot.avreclipse.core.AVRGCCManagedMakePerProjectProfileC"/>
 		</scannerConfigBuildInfo>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.core.pathentry"/>
 </cproject>

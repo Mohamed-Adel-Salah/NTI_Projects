@@ -78,7 +78,7 @@ void LCD_KIT_voidSetCurser(u8 Line , u8 Col);
 
 void LCD_KIT_voidDisplayString(u8 *Str);
 //void LCD_KIT_voidDisplayCustomCharacter(u8 *Str);
-void LCD_KIT_voidDisplayBigNumber(u16 Number);
+void LCD_KIT_voidDisplayBigNumber(u32 Number);
 
 void LCD_KIT_voidStoreCustomCharacter(u8 *Character,u8 Address);
 
