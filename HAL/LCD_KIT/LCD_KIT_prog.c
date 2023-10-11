@@ -5,38 +5,37 @@
  *      Author: hp
  */
 
+#include <LCD_KIT_confg.h>
 #include "STD_Types.h"
 #include "Macros.h"
 
 #include "DIO_int.h"
+#include "DIO_priv.h"
 
 #include "LCD_KIT_int.h"
-#include "LCD_KIT_priv.h"
 
 #include <util/delay.h>
 
 
 void LCD_KIT_voidInitialization(void)
 {
-	DIO_voidSetPinDirection(PortA,Pin2,Output);
-	DIO_voidSetPinDirection(PortA,Pin3,Output);
+	DIO_voidSetPinDirection(LCD_ADDRESS_PORT,LCD_ADDRESS_E,Output);
+	DIO_voidSetPinDirection(LCD_ADDRESS_PORT,LCD_ADDRESS_RS,Output);
 
-	//DIO_voidSetPinDirection(PortB,Pin0,Output);
-	DIO_voidSetPinDirection(PortB,Pin7,Output);
-	DIO_voidSetPinDirection(PortB,Pin1,Output);
-	DIO_voidSetPinDirection(PortB,Pin2,Output);
-	DIO_voidSetPinDirection(PortB,Pin4,Output);
+	DIO_voidSetPinDirection(LCD_DATA_PORT,LCD_DATA_PinD4,Output);
+	DIO_voidSetPinDirection(LCD_DATA_PORT,LCD_DATA_PinD5,Output);
+	DIO_voidSetPinDirection(LCD_DATA_PORT,LCD_DATA_PinD6,Output);
+	DIO_voidSetPinDirection(LCD_DATA_PORT,LCD_DATA_PinD7,Output);
 
 	_delay_ms(40);
-	//DIO_voidSetPinValue(PortB,Pin0,Low);
-	DIO_voidSetPinValue(PortB,Pin7,Low);
-	DIO_voidSetPinValue(PortB,Pin1,High);
-	DIO_voidSetPinValue(PortB,Pin2,Low);
-	DIO_voidSetPinValue(PortB,Pin4,Low);
+	DIO_voidSetPinValue(LCD_DATA_PORT,LCD_DATA_PinD4,Low);
+	DIO_voidSetPinValue(LCD_DATA_PORT,LCD_DATA_PinD5,High);
+	DIO_voidSetPinValue(LCD_DATA_PORT,LCD_DATA_PinD6,Low);
+	DIO_voidSetPinValue(LCD_DATA_PORT,LCD_DATA_PinD7,Low);
 
-	DIO_voidSetPinValue(PortA,Pin2,High);
+	DIO_voidSetPinValue(LCD_ADDRESS_PORT,LCD_ADDRESS_E,High);
 	_delay_ms(2);
-	DIO_voidSetPinValue(PortA,Pin2,Low);
+	DIO_voidSetPinValue(LCD_ADDRESS_PORT,LCD_ADDRESS_E,Low);
 	_delay_ms(2);
 
 	LCD_KIT_voidRunCommand(0x28);
@@ -57,28 +56,26 @@ void LCD_KIT_voidInitialization(void)
 
 void LCD_KIT_voidDisplayCharacter(u8 character)
 {
-	DIO_voidSetPinValue(PortA,Pin3,High);
+	DIO_voidSetPinValue(LCD_ADDRESS_PORT,LCD_ADDRESS_RS,High);
 
-	DIO_voidSetPinValue(PortB,Pin4,GET_BIT(character,Pin7));
-	DIO_voidSetPinValue(PortB,Pin2,GET_BIT(character,Pin6));
-	DIO_voidSetPinValue(PortB,Pin1,GET_BIT(character,Pin5));
-	//DIO_voidSetPinValue(PortB,Pin0,GET_BIT(character,Pin4));
-	DIO_voidSetPinValue(PortB,Pin7,GET_BIT(character,Pin4));
+	DIO_voidSetPinValue(LCD_DATA_PORT,LCD_DATA_PinD7,GET_BIT(character,Pin7));
+	DIO_voidSetPinValue(LCD_DATA_PORT,LCD_DATA_PinD6,GET_BIT(character,Pin6));
+	DIO_voidSetPinValue(LCD_DATA_PORT,LCD_DATA_PinD5,GET_BIT(character,Pin5));
+	DIO_voidSetPinValue(LCD_DATA_PORT,LCD_DATA_PinD4,GET_BIT(character,Pin4));
 
-	DIO_voidSetPinValue(PortA,Pin2,High);
+	DIO_voidSetPinValue(LCD_ADDRESS_PORT,LCD_ADDRESS_E,High);
 	_delay_ms(2);
-	DIO_voidSetPinValue(PortA,Pin2,Low);
+	DIO_voidSetPinValue(LCD_ADDRESS_PORT,LCD_ADDRESS_E,Low);
 	_delay_ms(2);
 
-	DIO_voidSetPinValue(PortB,Pin4,GET_BIT(character,Pin3));
-	DIO_voidSetPinValue(PortB,Pin2,GET_BIT(character,Pin2));
-	DIO_voidSetPinValue(PortB,Pin1,GET_BIT(character,Pin1));
-	//DIO_voidSetPinValue(PortB,Pin0,GET_BIT(character,Pin0));
-	DIO_voidSetPinValue(PortB,Pin7,GET_BIT(character,Pin0));
+	DIO_voidSetPinValue(LCD_DATA_PORT,LCD_DATA_PinD7,GET_BIT(character,Pin3));
+	DIO_voidSetPinValue(LCD_DATA_PORT,LCD_DATA_PinD6,GET_BIT(character,Pin2));
+	DIO_voidSetPinValue(LCD_DATA_PORT,LCD_DATA_PinD5,GET_BIT(character,Pin1));
+	DIO_voidSetPinValue(LCD_DATA_PORT,LCD_DATA_PinD4,GET_BIT(character,Pin0));
 
-	DIO_voidSetPinValue(PortA,Pin2,High);
+	DIO_voidSetPinValue(LCD_ADDRESS_PORT,LCD_ADDRESS_E,High);
 	_delay_ms(2);
-	DIO_voidSetPinValue(PortA,Pin2,Low);
+	DIO_voidSetPinValue(LCD_ADDRESS_PORT,LCD_ADDRESS_E,Low);
 	_delay_ms(2);
 
 	return;
@@ -86,28 +83,27 @@ void LCD_KIT_voidDisplayCharacter(u8 character)
 
 void LCD_KIT_voidRunCommand(u8 command)
 {
-	DIO_voidSetPinValue(PortA,Pin3,Low);
+	DIO_voidSetPinValue(LCD_ADDRESS_PORT,LCD_ADDRESS_RS,Low);
 
-	DIO_voidSetPinValue(PortB,Pin4,GET_BIT(command,Pin7));
-	DIO_voidSetPinValue(PortB,Pin2,GET_BIT(command,Pin6));
-	DIO_voidSetPinValue(PortB,Pin1,GET_BIT(command,Pin5));
-	//DIO_voidSetPinValue(PortB,Pin0,GET_BIT(command,Pin4));
-	DIO_voidSetPinValue(PortB,Pin7,GET_BIT(command,Pin4));
+	DIO_voidSetPinValue(LCD_DATA_PORT,LCD_DATA_PinD7,GET_BIT(command,Pin7));
+	DIO_voidSetPinValue(LCD_DATA_PORT,LCD_DATA_PinD6,GET_BIT(command,Pin6));
+	DIO_voidSetPinValue(LCD_DATA_PORT,LCD_DATA_PinD5,GET_BIT(command,Pin5));
+	DIO_voidSetPinValue(LCD_DATA_PORT,LCD_DATA_PinD4,GET_BIT(command,Pin4));
 
-	DIO_voidSetPinValue(PortA,Pin2,High);
+	DIO_voidSetPinValue(LCD_ADDRESS_PORT,LCD_ADDRESS_E,High);
 	_delay_ms(2);
-	DIO_voidSetPinValue(PortA,Pin2,Low);
+	DIO_voidSetPinValue(LCD_ADDRESS_PORT,LCD_ADDRESS_E,Low);
 	_delay_ms(2);
 
-	DIO_voidSetPinValue(PortB,Pin4,GET_BIT(command,Pin3));
-	DIO_voidSetPinValue(PortB,Pin2,GET_BIT(command,Pin2));
-	DIO_voidSetPinValue(PortB,Pin1,GET_BIT(command,Pin1));
-	//DIO_voidSetPinValue(PortB,Pin0,GET_BIT(command,Pin0));
-	DIO_voidSetPinValue(PortB,Pin7,GET_BIT(command,Pin0));
+	DIO_voidSetPinValue(LCD_DATA_PORT,LCD_DATA_PinD7,GET_BIT(command,Pin3));
+	DIO_voidSetPinValue(LCD_DATA_PORT,LCD_DATA_PinD6,GET_BIT(command,Pin2));
+	DIO_voidSetPinValue(LCD_DATA_PORT,LCD_DATA_PinD5,GET_BIT(command,Pin1));
+	DIO_voidSetPinValue(LCD_DATA_PORT,LCD_DATA_PinD4,GET_BIT(command,Pin0));
+	//DIO_voidSetPinValue(PortB,Pin7,GET_BIT(command,Pin0));
 
-	DIO_voidSetPinValue(PortA,Pin2,High);
+	DIO_voidSetPinValue(LCD_ADDRESS_PORT,LCD_ADDRESS_E,High);
 	_delay_ms(2);
-	DIO_voidSetPinValue(PortA,Pin2,Low);
+	DIO_voidSetPinValue(LCD_ADDRESS_PORT,LCD_ADDRESS_E,Low);
 	_delay_ms(2);
 
 	return;

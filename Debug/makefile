@@ -11,6 +11,8 @@ RM := rm -rf
 -include MCAL/USART/subdir.mk
 -include MCAL/Timer1/subdir.mk
 -include MCAL/Timer0/subdir.mk
+-include MCAL/SPI/subdir.mk
+-include MCAL/I2C/subdir.mk
 -include MCAL/GIE/subdir.mk
 -include MCAL/EXT_INT/subdir.mk
 -include MCAL/DIO/subdir.mk

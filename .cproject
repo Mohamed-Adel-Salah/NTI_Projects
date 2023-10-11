@@ -29,7 +29,7 @@
 							</tool>
 							<tool id="de.innot.avreclipse.tool.compiler.winavr.app.debug.714968544" name="AVR Compiler" superClass="de.innot.avreclipse.tool.compiler.winavr.app.debug">
 								<option id="de.innot.avreclipse.compiler.option.debug.level.1002145196" name="Generate Debugging Info" superClass="de.innot.avreclipse.compiler.option.debug.level"/>
-								<option id="de.innot.avreclipse.compiler.option.optimize.1708600166" name="Optimization Level" superClass="de.innot.avreclipse.compiler.option.optimize"/>
+								<option id="de.innot.avreclipse.compiler.option.optimize.1708600166" name="Optimization Level" superClass="de.innot.avreclipse.compiler.option.optimize" value="de.innot.avreclipse.compiler.optimize.size" valueType="enumerated"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="de.innot.avreclipse.compiler.option.incpath.2049411576" name="Include Paths (-I)" superClass="de.innot.avreclipse.compiler.option.incpath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:\Users\hp\Desktop\NTI\COTS\HAL\7SEG&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Users\hp\Desktop\NTI\COTS\HAL\SEG_KIT&quot;"/>
@@ -43,6 +43,9 @@
 									<listOptionValue builtIn="false" value="&quot;C:\Users\hp\Desktop\NTI\COTS\MCAL\USART&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Users\hp\Desktop\NTI\COTS\MCAL\Timer1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Users\hp\Desktop\NTI\COTS\MCAL\Timer0&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\hp\Desktop\NTI\COTS\MCAL\I2C&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/COTS/MCAL/SPI}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\hp\Desktop\NTI\COTS\Free RTOS&quot;"/>
 								</option>
 								<inputType id="de.innot.avreclipse.compiler.winavr.input.1415922985" name="C Source Files" superClass="de.innot.avreclipse.compiler.winavr.input"/>
 							</tool>

@@ -42,11 +42,11 @@ void DIO_voidInitialization (void)
 //	DIO_voidSetPinValue(PortB,Pin5,High);
 
 /***** Timer1 OC1 Pin*****/
-//	// OC1A Pin
-	DIO_voidSetPinDirection(PortD,Pin5,Output);
+//	DIO_voidSetPinDirection(PortD,Pin5,Output);
+//
+//	DIO_voidSetPinDirection(PortB,Pin3,Output);
+//	DIO_voidSetPinDirection(PortD,Pin6,Input);
 
-	DIO_voidSetPinDirection(PortB,Pin3,Output);
-	DIO_voidSetPinDirection(PortD,Pin6,Input);
 }
 
 void 	DIO_voidSetPinDirection (u8 PortId,u8 PinId,u8 Direction)

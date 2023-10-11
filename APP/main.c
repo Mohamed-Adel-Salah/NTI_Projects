@@ -5,36 +5,46 @@
  *      Author: hp
  */
 
+//#define F_CPU 8000000UL
+
+
 #include "STD_Types.h"
 #include "Macros.h"
 
 //#include <math.h>
 
 #include "DIO_int.h"
-//#include "DIO_reg.h"
+#include "DIO_reg.h"
 //#include "7SEG_int.h"
 //#include "SEG_KIT_int.h"
 #include "LCD_KIT_int.h"
-#include "KEYBAD_int.h"
-#include "KEYPAD_priv.h"
+//#include "KEYBAD_int.h"
+//#include "KEYPAD_priv.h"
 #include "GIE_int.h"
 //#include "EXT_INT_int.h"
 //#include "EXT_INT_priv.h"
 //#include "ADC_int.h"
 //#include "ADC_priv.h"
-//#include "USART_int.h"
-//#include "USART_priv.h"
-#include "Timer0_int.h"
-#include "Timer0_priv.h"
-#include "Timer0_confg.h"
-#include "Timer1_int.h"
-#include "Timer1_priv.h"
-#include "Timer1_confg.h"
+#include "USART_int.h"
+#include "USART_priv.h"
+//#include "SPI_int.h"
+//#include "SPI_priv.h"
+//#include "I2C_int.h"
+//#include "I2C_priv.h"
+//#include "Timer0_int.h"
+//#include "Timer0_priv.h"
+//#include "Timer0_confg.h"
+//#include "Timer1_int.h"
+//#include "Timer1_priv.h"
+//#include "Timer1_confg.h"
+
+//#include "FreeRTOS.h"
+//#include "task.h"
 
 #include <util/delay.h>
 
-#include "../MCAL/Timer0/Timer0_int.h"
-#include "../MCAL/Timer0/Timer0_priv.h"
+//#include "../MCAL/Timer0/Timer0_int.h"
+//#include "../MCAL/Timer0/Timer0_priv.h"
 
 /****************************7SEG Application**********************************/
 /*
@@ -604,24 +614,25 @@ int main(void)
 
 /*************************KEYPAD Application***********************************/
 
-u16 Power(u8 x , u8 y)
-{
-	u8 res=1;
-
-	if(y==0)
-	{
-		return res;
-	}
-
-	while(y!=0)
-	{
-		res*=x;
-		y--;
-	}
-
-	return res;
-}
+//u16 Power(u8 x , u8 y)
+//{
+//	u8 res=1;
 //
+//	if(y==0)
+//	{
+//		return res;
+//	}
+//
+//	while(y!=0)
+//	{
+//		res*=x;
+//		y--;
+//	}
+//
+//	return res;
+//}
+
+
 //int main(void)
 //{
 //	LCD_KIT_voidInitialization();
@@ -907,8 +918,7 @@ u16 Power(u8 x , u8 y)
 //	}
 //
 //	return 0;
-//}//
-
+//}
 
 /************************* Interrupts *****************************************/
 
@@ -995,85 +1005,91 @@ int main(void)
 
 /*************************** USART ********************************************/
 
-u8 UDR_Global;
-/*
-u8 temp;
-
-void USART_voidSendData_Intrrupt(u8 Character)
-{
-	UDR=Character;
-
-	CLR_BIT(UCSRA,UDRE);
-
-	return;
-}
-
-void USART_voidRecieveData_Interrupt(void)
-{
-	//LCD_KIT_voidDisplayCharacter('A');
-
-	UDR_Global=UDR;
-	temp=UDR;
-
-	LCD_KIT_voidDisplayCharacter(UDR_Global);
-	LCD_KIT_voidDisplayCharacter(temp);
-	//SET_BIT(UCSRA,RXC);
-
-//	CLR_BIT(UCSRB,RXEN);
-//	SET_BIT(UCSRB,RXEN);
-
-	return;
-}
-
-int main(void)
-{
-	DIO_voidInitialization();
-
-	LCD_KIT_voidInitialization();
-
-	USART_voidInitialization();
-
-	USART_RecieveCallBack(USART_voidRecieveData_Interrupt);
-	//USART_SendCallBack(USART_voidSendData_Intrrupt);
-
-	GIE_Enable();
-
-//	_delay_ms(200);
-//	USART_voidSendData_Polling(65);
-//	_delay_ms(200);
-//	USART_voidSendData_Polling('h');
-//	_delay_ms(200);
-//	USART_voidSendData_Polling('m');
-//	_delay_ms(200);
-//	USART_voidSendData_Polling('e');
-//	_delay_ms(200);
-//	USART_voidSendData_Polling('d');
-//	_delay_ms(200);
-
-//	USART_voidRecieveData_Polling();
-//	LCD_KIT_voidDisplayCharacter(UDR_Global);
+//u8 UDR_Global;
 //
-//	USART_voidRecieveData_Polling();
-//	LCD_KIT_voidDisplayCharacter(UDR_Global);
+//u8 temp;
 //
-//	USART_voidRecieveData_Polling();
+//void USART_voidSendData_Intrrupt(u8 Character)
+//{
+//	UDR=Character;
+//
+//	CLR_BIT(UCSRA,UDRE);
+//
+//	return;
+//}
+//
+//void USART_voidRecieveData_Interrupt(void)
+//{
+//	LCD_KIT_voidDisplayCharacter('A');
+//
+//	UDR_Global=UDR;
+//	//temp=UDR;
+//
 //	LCD_KIT_voidDisplayCharacter(UDR_Global);
+//	//LCD_KIT_voidDisplayCharacter(temp);
+//	//SET_BIT(UCSRA,RXC);
+//
+////	GIE_Disable();
+////	GIE_Enable();
+//
+////	CLR_BIT(UCSRB,RXEN);
+////	SET_BIT(UCSRB,RXEN);
+//
+//
+//}
+//
+//int main(void)
+//{
+//	USART_RecieveCallBack(USART_voidRecieveData_Interrupt);
+//		//USART_SendCallBack(USART_voidSendData_Intrrupt);
+//
+//	DIO_voidInitialization();
+//
+//	LCD_KIT_voidInitialization();
+//
+//	USART_voidInitialization();
+//
+//	GIE_Enable();
+//
+////	_delay_ms(200);
+////	USART_voidSendData_Polling(65);
+////	_delay_ms(200);
+////	USART_voidSendData_Polling('h');
+////	_delay_ms(200);
+////	USART_voidSendData_Polling('m');
+////	_delay_ms(200);
+////	USART_voidSendData_Polling('e');
+////	_delay_ms(200);
+////	USART_voidSendData_Polling('d');
+////	_delay_ms(200);
+//
+////	USART_voidRecieveData_Polling();
+////	LCD_KIT_voidDisplayCharacter(UDR_Global);
+////
+////	USART_voidRecieveData_Polling();
+////	LCD_KIT_voidDisplayCharacter(UDR_Global);
+////
+////	USART_voidRecieveData_Polling();
+////	LCD_KIT_voidDisplayCharacter(UDR_Global);
+//
+//	while(1)
+//	{
+////		LCD_KIT_voidDisplayCharacter('g');
+////		_delay_ms(50);
+//
+//		//		USART_voidRecieveData_Polling();
+////		LCD_KIT_voidDisplayCharacter(UDR_Global);
+////		_delay_ms(1000);
+//
+//	}
+//
+//
+//	return 0;
+//}
 
-	while(1)
-	{
-//		USART_voidRecieveData_Polling();
-//		LCD_KIT_voidDisplayCharacter(UDR_Global);
-//		_delay_ms(1000);
-
-	}
-
-
-	return 0;
-}
-*/
 
 /*************************** Timers *******************************************/
-
+/*
 volatile u16 Counter=0;
 void Timer0_OVF_Interrupt(void)
 {
@@ -1155,6 +1171,7 @@ void Timer1_ICR_interrupt(void)
 			Timer1_voidOVFInterruptDisable();
 		}
 }
+*/
 
 //
 //int main(void)
@@ -1290,18 +1307,229 @@ void Timer1_ICR_interrupt(void)
 
 /****************************** I2C *******************************************/
 
+//u8 Return;
+//int main(void)
+//{
+//	I2C_voidInitializtion();
+//	LCD_KIT_voidInitialization();
+//
+//	Return=I2C_Master_SendStartCondition();
+//	//LCD_KIT_voidSetCurser(Line1,Col0);
+//	//LCD_KIT_voidDisplayBigNumber(Return);
+//	Return=I2C_Master_SendSlaveAddress_Write(0x15);
+//	LCD_KIT_voidSetCurser(Line2,Col0);
+//	LCD_KIT_voidDisplayBigNumber(Return);
+//	Return=I2C_Master_SendData(1);
+//	_delay_ms(30);
+////	LCD_KIT_voidSetCurser(Line3,Col0);
+////	LCD_KIT_voidDisplayBigNumber(Return);
+//	Return=I2C_Master_SendData(2);
+//	_delay_ms(30);
+////	LCD_KIT_voidSetCurser(Line4,Col0);
+////	LCD_KIT_voidDisplayBigNumber(Return);
+//	Return = I2C_Master_SendData(3);
+//	_delay_ms(5);
+////	LCD_KIT_voidSetCurser(Line1,Col0);
+////	LCD_KIT_voidDisplayBigNumber(Return);
+//	I2C_Master_SendStopCondition();
+//
+////	I2C_Master_SendStartCondition();
+////	I2C_Master_SendSlaveAddress_Write(0x00);
+////	I2C_Master_SendData(0x54);
+////	I2C_Master_SendData(0x45);
+////	I2C_Master_SendStopCondition();
+//
+//	while(1)
+//	{
+//
+//	}
+//
+//	return 0;
+//}
+
+/****************************** SPI *******************************************/
+
+u8 Return;
+
+/*
+void SPI_RecieveValueByInterrupt(void)
+{
+	LCD_KIT_voidDisplayCharacter(SPI_SPDR);
+}
+
 int main(void)
 {
+	//SPI_CallBack(SPI_RecieveValueByInterrupt);
+	SPI_voidInitialization();
+	LCD_KIT_voidInitialization();
+
+	//LCD_KIT_voidDisplayCharacter('B');
+
+//	SPI_voidInterruptEnable();
+//	GIE_Enable();
+
+	SPI_MasterTransmit(0x82);
+	//LCD_KIT_voidDisplayCharacter('A');
+	_delay_ms(500);
+
+	SPI_MasterTransmit(0x84);
+	//LCD_KIT_voidDisplayCharacter('B');
+	_delay_ms(500);
+
+//	SPI_MasterTransmit(0x86);
+//	//LCD_KIT_voidDisplayCharacter('C');
+//	_delay_ms(1000);
+
+	while(1)
+	{
+
+	}
+
+	return 0;
+}
+
+*/
+
+
+/*************************** Free RTOS ****************************************/
+
+/*
+
+void TasK_Function(  void * PTR )
+{
+
+	u8 Pin_ID = *( (u8 *) PTR );
+
+	while(1)
+	{
+		SET_BIT(DDRA,Pin_ID);
+		SET_BIT(PORTA,Pin_ID);
+
+		vTaskDelay(10 * Pin_ID);
+	}
 
 }
 
+int main(void)
+{
+
+	vTaskStartScheduler();
+
+	void * Handler1 = NULL;
+	void * Handler2 = NULL;
+	void * Handler3 = NULL;
+
+	u8 LED_ID_1 = 4;
+	u8 LED_ID_2 = 5;
+	u8 LED_ID_3 = 6;
+
+	u8 Priority = 1;
 
 
 
+	xTaskCreate(TasK_Function,"LED1",150,&LED_ID_1,Priority,&Handler1);
+	xTaskCreate(TasK_Function,"LED2",150,&LED_ID_2,Priority,&Handler2);
+	xTaskCreate(TasK_Function,"LED3",150,&LED_ID_3,Priority,&Handler3);
 
 
 
+}
+*/
 
 
+/********************** UART with Bluetooth ***********************************/
+
+void USART_voidRecieveData_Interrupt(void);
+void USART_voidSendData_Interrupt(void);
+
+void main()
+{
+
+//	Interrupt
+//
+//	LCD_KIT_voidInitialization();
+//	USART_voidInitialization();
+//
+//	LCD_KIT_voidDisplayCharacter('S');
+//
+//	USART_RecieveCallBack(USART_voidRecieveData_Interrupt);
+//	USART_SendCallBack(USART_voidSendData_Interrupt);
+//
+//	USART_voidEnableReceiverInterrupt();
+//	USART_voidEnableTransmitterInterrupt();
+//	GIE_Enable();
+//
+////	USART_voidSendString_Polling("Ahmed ");
+
+//	POOLING
+
+	LCD_KIT_voidInitialization();
+	USART_voidInitialization();
+
+	//LCD_KIT_voidDisplayCharacter('D');
+
+	DIO_voidSetPortDirection(PortA,Output);
+	DIO_voidSetPinValue(PortA,Pin5,High);
+	DIO_voidSetPinValue(PortA,Pin4,High);
+	DIO_voidSetPinValue(PortA,Pin6,High);
+	//_delay_ms(1000);
+
+	u8 arr[20]="Hi Mohamed ";
+
+	USART_voidSendString_Polling(arr);
+
+	while(1)
+	{
+		u8 Temp=0;
+
+		Temp=USART_u8RecieveData_Polling();
+		LCD_KIT_voidDisplayCharacter(Temp);
+
+		if(Temp=='1')
+		{
+			DIO_voidTogglePin(PortA,Pin6);
+		}
+		else if(Temp=='2')
+		{
+			DIO_voidTogglePin(PortA,Pin5);
+		}
+		else if(Temp=='3')
+		{
+			DIO_voidTogglePin(PortA,Pin4);
+		}
+
+		LCD_KIT_voidDisplayCharacter('Z');
+		USART_voidSendData_Polling('A');
+		//_delay_ms(500);
+	}
+
+	while(1)
+	{
+		LCD_KIT_voidDisplayCharacter('L');
+		_delay_ms(500);
+	}
+
+
+	return;
+}
+
+void USART_voidRecieveData_Interrupt(void)
+{
+	LCD_KIT_voidDisplayCharacter('A');
+	LCD_KIT_voidDisplayCharacter(UDR);
+}
+
+void USART_voidSendData_Interrupt(void)
+{
+	LCD_KIT_voidDisplayCharacter('H');
+
+	CLR_BIT(UCSRB,TXEN);
+	SET_BIT(UCSRB,TXEN);
+
+	USART_voidDisableTransmitterInterrupt();
+	USART_voidEnableTransmitterInterrupt();
+
+
+}
 
 

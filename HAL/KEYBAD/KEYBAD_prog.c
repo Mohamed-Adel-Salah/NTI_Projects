@@ -12,33 +12,33 @@
 #include "DIO_int.h"
 
 #include "KEYBAD_int.h"
+#include "KEYBADConfg.h"
 
 
 void KEYBAD_voidInitialization(void)
 {
-	DIO_voidSetPinDirection(PortC,Pin5,Input);
-	DIO_voidSetPinDirection(PortC,Pin4,Input);
-	DIO_voidSetPinDirection(PortC,Pin3,Input);
-	DIO_voidSetPinDirection(PortC,Pin2,Input);
+	DIO_voidSetPinDirection(KEYPAD_ROW_Port,KEYPAD_ROW_Pin1,Input);
+	DIO_voidSetPinDirection(KEYPAD_ROW_Port,KEYPAD_ROW_Pin2,Input);
+	DIO_voidSetPinDirection(KEYPAD_ROW_Port,KEYPAD_ROW_Pin3,Input);
+	DIO_voidSetPinDirection(KEYPAD_ROW_Port,KEYPAD_ROW_Pin4,Input);
 
-	DIO_voidSetPinValue(PortC,Pin5,High);
-	DIO_voidSetPinValue(PortC,Pin4,High);
-	DIO_voidSetPinValue(PortC,Pin3,High);
-	DIO_voidSetPinValue(PortC,Pin2,High);
-
-
+	DIO_voidSetPinValue(KEYPAD_ROW_Port,KEYPAD_ROW_Pin1,High);
+	DIO_voidSetPinValue(KEYPAD_ROW_Port,KEYPAD_ROW_Pin2,High);
+	DIO_voidSetPinValue(KEYPAD_ROW_Port,KEYPAD_ROW_Pin3,High);
+	DIO_voidSetPinValue(KEYPAD_ROW_Port,KEYPAD_ROW_Pin4,High);
 
 
-	DIO_voidSetPinDirection(PortD,Pin7,Output);
-	DIO_voidSetPinDirection(PortD,Pin6,Output);
-	DIO_voidSetPinDirection(PortD,Pin5,Output);
-	DIO_voidSetPinDirection(PortD,Pin3,Output);
 
-	DIO_voidSetPinValue(PortD,Pin7,High);
-	DIO_voidSetPinValue(PortD,Pin6,High);
-	DIO_voidSetPinValue(PortD,Pin5,High);
-	DIO_voidSetPinValue(PortD,Pin3,High);
 
+	DIO_voidSetPinDirection(KEYPAD_COL_Port,KEYPAD_COL_Pin1,Output);
+	DIO_voidSetPinDirection(KEYPAD_COL_Port,KEYPAD_COL_Pin2,Output);
+	DIO_voidSetPinDirection(KEYPAD_COL_Port,KEYPAD_COL_Pin3,Output);
+	DIO_voidSetPinDirection(KEYPAD_COL_Port,KEYPAD_COL_Pin4,Output);
+
+	DIO_voidSetPinValue(KEYPAD_COL_Port,KEYPAD_COL_Pin1,High);
+	DIO_voidSetPinValue(KEYPAD_COL_Port,KEYPAD_COL_Pin2,High);
+	DIO_voidSetPinValue(KEYPAD_COL_Port,KEYPAD_COL_Pin3,High);
+	DIO_voidSetPinValue(KEYPAD_COL_Port,KEYPAD_COL_Pin4,High);
 	//return;
 }
 
@@ -49,11 +49,11 @@ void KEYBAD_voidGetPressedKey(u8 *Row, u8 *Col,u8 *Flag)
 		if(i==1)
 		{	continue;	}
 
-		DIO_voidSetPortValueMask(PortD,~(1<<(i+3)),0x17);
+		DIO_voidSetPortValueMask(KEYPAD_COL_Port,~(1<<(i+3)),0x17);
 
 		for(u8 j=0;j<4;j++)
 		{
-			if(!DIO_u8GetPinValue(PortC,j+2))
+			if(!DIO_u8GetPinValue(KEYPAD_ROW_Port,j+2))
 			{
 				*Row=3-j;
 				*Col=4-i;
@@ -63,7 +63,7 @@ void KEYBAD_voidGetPressedKey(u8 *Row, u8 *Col,u8 *Flag)
 		}
 	}
 
-	DIO_voidSetPortValueMask(PortD,0xFF,0x17);
+	DIO_voidSetPortValueMask(KEYPAD_COL_Port,0xFF,0x17);
 
 	return;
 }
